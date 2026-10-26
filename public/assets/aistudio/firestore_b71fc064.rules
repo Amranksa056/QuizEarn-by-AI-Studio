@@ -1,0 +1,78 @@
+rules_version = '2';
+
+/**
+ * QuizEarn security rules.
+ *
+ * The client is untrusted. It may read its own profile and public questions,
+ * and may edit cosmetic profile fields. Every money field (coins, stats,
+ * lifelines, redemptions) is written by Cloud Functions, which bypass rules.
+ */
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    function isSelf(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function changed() {
+      return request.resource.data.diff(resource.data).affectedKeys();
+    }
+
+    // Profile. Money fields are never writable from the client.
+    match /users/{uid} {
+      allow read: if isSelf(uid) || isAdmin();
+
+      allow create: if isSelf(uid)
+        && request.resource.data.coins == 0
+        && request.resource.data.lifetimeEarned == 0
+        && request.resource.data.heldCoins == 0;
+
+      allow update: if isAdmin() || (
+        isSelf(uid) && changed().hasOnly([
+          'name', 'theme', 'lang', 'haptics',
+          'payoutMethod', 'payoutPhone', 'payoutEmail', 'photoURL', 'lastActive'
+        ])
+      );
+
+      allow delete: if false;
+    }
+
+    // Public question text (no `answer` field here).
+    match /questions/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // Answer key + round state: server only.
+    match /question_answers/{id} {
+      allow read, write: if false;
+    }
+
+    match /rounds/{id} {
+      allow read, write: if false;
+    }
+
+    match /redeem_requests/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow write: if false;
+    }
+
+    match /activity/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow write: if false;
+    }
+
+    match /leaderboard/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+  }
+}

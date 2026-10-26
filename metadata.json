@@ -1,0 +1,6 @@
+{
+  "name": "QuizEarn",
+  "description": "Fast-paced Bullet Quiz and trivia game with coins, streaks, lifelines, reward redemption, and bilingual support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

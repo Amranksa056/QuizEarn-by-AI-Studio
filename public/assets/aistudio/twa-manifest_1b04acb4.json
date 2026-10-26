@@ -1,0 +1,42 @@
+{
+  "packageId": "com.yourname.quizearn",
+  "host": "your-site.netlify.app",
+  "name": "QuizEarn",
+  "launcherName": "QuizEarn",
+  "display": "standalone",
+  "themeColor": "#0b1020",
+  "themeColorDark": "#0b1020",
+  "navigationColor": "#0b1020",
+  "navigationColorDark": "#0b1020",
+  "navigationDividerColor": "#0b1020",
+  "navigationDividerColorDark": "#0b1020",
+  "backgroundColor": "#0b1020",
+  "enableNotifications": false,
+  "startUrl": "/",
+  "iconUrl": "https://your-site.netlify.app/icons/icon-512.png",
+  "maskableIconUrl": "https://your-site.netlify.app/icons/icon-maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://your-site.netlify.app/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://your-site.netlify.app/",
+  "minSdkVersion": 21,
+  "orientation": "portrait-primary",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": []
+}
